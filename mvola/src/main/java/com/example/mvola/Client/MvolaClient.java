@@ -1,5 +1,6 @@
 package com.example.mvola.Client;
 
+import com.example.mvola.Response.ResponseGet;
 import com.example.mvola.Response.ResponseStatus;
 import com.example.mvola.Response.ResponseToken;
 import com.example.mvola.Response.ResponseTransaction;
@@ -64,6 +65,21 @@ public class MvolaClient {
                 .header("partnerName", "EQIMA")
                 .retrieve()
                 .bodyToMono(ResponseStatus.class)
+                .block();
+
+    }
+
+    public ResponseGet getAbout(String refence, String correlationId, String response, RequestTransaction REQUEST) {
+        return webClient.get()
+                .uri("/mvola/mm/transactions/type/merchantpay/1.0.0/"+refence)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer "+response)
+                .header("Version", "1.0")
+                .header("X-CorrelationID", correlationId)
+                .header("UserLanguage", "FR")
+                .header("UserAccountIdentifier", "msisdn;"+REQUEST.getCredit())
+                .header("partnerName", "EQIMA")
+                .retrieve()
+                .bodyToMono(ResponseGet.class)
                 .block();
 
     }

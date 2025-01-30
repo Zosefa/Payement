@@ -1,6 +1,8 @@
 package com.example.apigateway.client;
 
 import com.example.apigateway.model.RequestTransactionMvola;
+import com.example.apigateway.model.ResponseGetMvola;
+import com.example.apigateway.model.ResponseStatusMvola;
 import com.example.apigateway.model.ResponseTransactionMvola;
 import jakarta.ws.rs.core.MediaType;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -18,12 +20,26 @@ public class MvolaClient {
         this.webClient = webClientBuilder.baseUrl("http://mvola-service").build();
     }
 
-    public Mono<ResponseTransactionMvola> transaction(RequestTransactionMvola request) {
+    public Mono<Object> transaction(RequestTransactionMvola request) {
         return webClient.post()
                 .uri("/mvola/transaction")
                 .contentType(org.springframework.http.MediaType.valueOf(MediaType.APPLICATION_JSON))
                 .bodyValue(request)
                 .retrieve()
-                .bodyToMono(ResponseTransactionMvola.class);
+                .bodyToMono(Object.class);
+    }
+
+    public Mono<ResponseStatusMvola> getStatus(String correlationId) {
+        return webClient.get()
+                .uri("/mvola/status/"+correlationId)
+                .retrieve()
+                .bodyToMono(ResponseStatusMvola.class);
+    }
+
+    public Mono<ResponseGetMvola> getAbout(String reference) {
+        return webClient.get()
+                .uri("/mvola/"+reference)
+                .retrieve()
+                .bodyToMono(ResponseGetMvola.class);
     }
 }

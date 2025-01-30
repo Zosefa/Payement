@@ -2,6 +2,7 @@ package com.example.mvola.controller;
 
 import com.example.mvola.Client.MvolaClient;
 import com.example.mvola.RandomTextService;
+import com.example.mvola.Response.ResponseGet;
 import com.example.mvola.Response.ResponseStatus;
 import com.example.mvola.Response.ResponseToken;
 import com.example.mvola.Response.ResponseTransaction;
@@ -94,6 +95,22 @@ public class MvolaController {
 //        String Id = correlatioIdResponse.get("correlation_Id");
 
         ResponseStatus response = mvolaClient.getStatus(reponse, id,responseToken.access_token(), request);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> aboutTransaction(@PathVariable String id) {
+        Token token = new Token();
+        token.setGrantType("client_credentials");
+        token.setScope("EXT_INT_MVOLA_SCOPE");
+
+        ResponseToken responseToken = mvolaClient.getToken(token);
+
+        ResponseTransaction reponse = transactionResponse.get("Reponse");
+        String IdCorrelation = correlatioIdResponse.get("correlation_Id");
+
+        ResponseGet response = mvolaClient.getAbout(id,IdCorrelation,responseToken.access_token(), request);
 
         return ResponseEntity.ok(response);
     }
