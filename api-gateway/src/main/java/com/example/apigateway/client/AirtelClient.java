@@ -1,7 +1,6 @@
 package com.example.apigateway.client;
 
 import com.example.apigateway.model.RequestTransactionMvola;
-import com.example.apigateway.model.ResponseTransactionMvola;
 import jakarta.ws.rs.core.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
